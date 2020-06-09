@@ -7,8 +7,18 @@ const path = require('path');
 const PORT = process.env.PORT || 3001;
 const USEFUL_PROPERTIES = new Set(['Name', 'Vocation', 'Residence', 'Level', 'Last Login', 'Account Status']);
 
-const parseTableRowEl = el => el.split(':');
+const parseTableRowEl = el => el.split(/:(.+)/g).filter(v => !!v);
 const replaceWhiteSpaces = str => str.replace('/ /g', '+');
+
+const extractDateFieldsFromString = dateString => (
+  /(?<month>[A-Z]{1}[a-z]{2}) (?<day>[0-9]{2}) (?<year>[0-9]{4}), (?<time>.{8})/.exec(dateString).groups
+);
+
+const parseDate = dateString => {
+  const { month, day, year, time } = extractDateFieldsFromString(dateString);
+  const centralEuropeDate = new Date(`${month} ${day} ${year}, ${time} GMT+0200`);
+  return centralEuropeDate.toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"});
+};
 
 const fetchCharInfo = async name => {
   name = replaceWhiteSpaces(name);
@@ -47,6 +57,11 @@ app.get('/search', async (req, res) => {
       parsedData.set(key, val);
     }
   });
+
+  parsedData.set(
+    'Last Login',
+    parseDate(parsedData.get('Last Login')),
+  );
 
   res.send(
     Object.fromEntries(parsedData)
