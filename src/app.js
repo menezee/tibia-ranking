@@ -40,6 +40,7 @@ function App() {
     'Marcao Dorminhoco',
     'Portaluppi Dorminhoco',
     'Abbott Dorminhoco',
+    'Gerente do Hiller',
     'Chumisgo',
   ], []);
 
@@ -57,6 +58,21 @@ function App() {
     });
   }, [names]);
 
+  const vocationColor = (char) => {
+      if (char.Vocation.toLowerCase().includes("druid")) {
+        return 'textSecondary'
+      }
+      if (char.Vocation.toLowerCase().includes("knight")) {
+        return 'primary'
+      }
+      if (char.Vocation.toLowerCase().includes("sorcerer")) {
+        return 'error'
+      }
+      if (char.Vocation.toLowerCase().includes("paladin")) {
+        return 'textPrimary'
+      }
+  }
+
   return (
     <div className={ classes.root }>
       <Grid container spacing={ 2 } className={ classes.gridContainer }>
@@ -72,7 +88,7 @@ function App() {
                   chars[i]?.Name ? (
                     <Card className={ classes.card } variant="outlined">
                       <CardContent>
-                        <Typography variant='h6' color="primary" gutterBottom>
+                      <Typography variant='h6' color={vocationColor(chars[i])} gutterBottom>
                           { chars[i].Name }
                         </Typography>
                         {
