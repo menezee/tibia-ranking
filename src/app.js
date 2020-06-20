@@ -3,11 +3,10 @@ import {
   Grid,
   Paper,
   makeStyles,
-  Card,
-  CardContent,
-  Typography,
 } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
+
+import { CharCard } from './components/char-card';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,9 +23,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   skeleton: {
-    minHeight: 210,
-  },
-  card: {
     minHeight: 210,
   },
   title: {
@@ -73,46 +69,52 @@ function App() {
       }
   }
 
+  const findCharByName = name => chars.find(c => c.Name.includes(name));
+
+  const sortByLevel = (name1, name2) => {
+    if (names.length !== chars.length) return true; //noop
+
+    const char1 = findCharByName(name1);
+    const char2 = findCharByName(name2);
+
+    return char1.Level > char2.Level ? -1 : 1
+  };
+
+  const hasCharBeenLoaded = (char = {}) => Object.keys(char).length > 0;
+
   return (
     <div className={ classes.root }>
       <Grid container spacing={ 2 } className={ classes.gridContainer }>
         {
-          names.map((name, i) => (
-            <Grid
-              item
-              xs={ 12 } sm={ 12 } md={ 3 }
-              key={ name }
-            >
-              <Paper className={ classes.paper }>
-                {
-                  chars[i]?.Name ? (
-                    <Card className={ classes.card } variant="outlined">
-                      <CardContent>
-                      <Typography variant='h6' color={vocationColor(chars[i])} gutterBottom>
-                          { chars[i].Name }
-                        </Typography>
-                        {
-                          Object
-                            .entries(chars[i])
-                            .map(([key, val]) => (
-                              key !== 'Name' &&
-                              <Typography variant='body1' color="textSecondary" gutterBottom>
-                                { key }: { val }
-                              </Typography>
-                            ))
-                        }
-                      </CardContent>
-                    </Card>
-                  ) : (
-                    <Skeleton
-                      className={ classes.skeleton }
-                      variant='rect'
-                    />
-                  )
-                }
-              </Paper>
-            </Grid>
-          ))
+          names
+          .sort(sortByLevel)
+          .map((name, i) => {
+            const char = findCharByName(name);
+
+            return (
+              <Grid
+                item
+                xs={ 12 } sm={ 12 } md={ 3 }
+                key={ name }
+              >
+                <Paper className={ classes.paper }>
+                  {
+                    hasCharBeenLoaded(char) ? (
+                      <CharCard
+                        char={char}
+                        color={vocationColor(char)}
+                      />
+                    ) : (
+                      <Skeleton
+                        className={ classes.skeleton }
+                        variant='rect'
+                      />
+                    )
+                  }
+                </Paper>
+              </Grid>
+            )
+          })
         }
       </Grid>
     </div>
