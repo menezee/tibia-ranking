@@ -36,7 +36,6 @@ function App() {
     'Marcao Dorminhoco',
     'Portaluppi Dorminhoco',
     'Abbott Dorminhoco',
-    'Gerente do Hiller',
     'Chumisgo',
   ], []);
 
