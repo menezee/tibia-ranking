@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    '&:hover': {
+      boxShadow: '0px 0px 7px 6px rgba(0, 0, 0, 0.29)',
+    },
   },
   skeleton: {
     minHeight: 210,
@@ -37,6 +40,10 @@ function App() {
     'Portaluppi Dorminhoco',
     'Abbott Dorminhoco',
     'Chumisgo',
+    'Avalanchin Dorminhoco',
+    'Guizon Dorminhoco',
+    'Marvo Dorminhoco',
+    'Siozinho Dorminhoco',
   ], []);
 
   const [chars, setChars] = useState([]);
@@ -76,7 +83,7 @@ function App() {
     const char1 = findCharByName(name1);
     const char2 = findCharByName(name2);
 
-    return char1.Level > char2.Level ? -1 : 1
+    return Number(char1.Level) > Number(char2.Level) ? -1 : 1
   };
 
   const hasCharBeenLoaded = (char = {}) => Object.keys(char).length > 0;
@@ -87,7 +94,7 @@ function App() {
         {
           names
           .sort(sortByLevel)
-          .map((name, i) => {
+          .map((name) => {
             const char = findCharByName(name);
 
             return (
