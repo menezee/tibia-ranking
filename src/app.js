@@ -38,12 +38,10 @@ function App() {
     'Eriq Dorminhoco',
     'Marcao Dorminhoco',
     'Portaluppi Dorminhoco',
-    'Abbott Dorminhoco',
-    'Chumisgo',
     'Avalanchin Dorminhoco',
-    'Guizon Dorminhoco',
     'Marvo Dorminhoco',
-    'Siozinho Dorminhoco',
+    'Cursed Of Mage',
+    'Limac Dorminhoco',
   ], []);
 
   const [chars, setChars] = useState([]);
@@ -59,6 +57,23 @@ function App() {
       ]);
     });
   }, [names]);
+
+  useEffect(() => {
+    const homenagemChumisgo = {
+      "Name": "Chumisgo",
+      "Vocation": "Beloved Elder Druid",
+      "Level": "125",
+      "Residence": "Our ❤️",
+      "Last Login": "9/23/2020, 11:22:33 AM (RIP)"
+    }
+
+    setTimeout(() => {
+      setChars(prev => [
+        ...prev,
+        homenagemChumisgo,
+      ]);
+    }, 1000);
+  }, []);
 
   const vocationColor = (char) => {
       if (char.Vocation.toLowerCase().includes("druid")) {
@@ -78,7 +93,7 @@ function App() {
   const findCharByName = name => chars.find(c => c.Name.includes(name));
 
   const sortByLevel = (name1, name2) => {
-    if (names.length !== chars.length) return true; //noop
+    if (names.length + 1 !== chars.length) return true; //noop
 
     const char1 = findCharByName(name1);
     const char2 = findCharByName(name2);
@@ -93,32 +108,35 @@ function App() {
       <Grid container spacing={ 2 } className={ classes.gridContainer }>
         {
           names
+          .concat('Chumisgo')
           .sort(sortByLevel)
           .map((name) => {
             const char = findCharByName(name);
 
             return (
-              <Grid
-                item
-                xs={ 12 } sm={ 12 } md={ 3 }
-                key={ name }
-              >
-                <Paper className={ classes.paper }>
-                  {
-                    hasCharBeenLoaded(char) ? (
-                      <CharCard
-                        char={char}
-                        color={vocationColor(char)}
-                      />
-                    ) : (
-                      <Skeleton
-                        className={ classes.skeleton }
-                        variant='rect'
-                      />
-                    )
-                  }
-                </Paper>
-              </Grid>
+              <>
+                <Grid
+                  item
+                  xs={ 12 } sm={ 12 } md={ 3 }
+                  key={ name }
+                >
+                  <Paper className={ classes.paper }>
+                    {
+                      hasCharBeenLoaded(char) ? (
+                        <CharCard
+                          char={char}
+                          color={vocationColor(char)}
+                        />
+                      ) : (
+                        <Skeleton
+                          className={ classes.skeleton }
+                          variant='rect'
+                        />
+                      )
+                    }
+                  </Paper>
+                </Grid>
+              </>
             )
           })
         }

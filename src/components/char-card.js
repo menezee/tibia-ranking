@@ -6,11 +6,16 @@ import {
   Typography,
   Link,
 } from '@material-ui/core';
+import sadnessBackground from '../assets/sadness.png';
 
 const useStyles = makeStyles((theme) => ({
   card: {
     minHeight: 210,
   },
+  chumisgo: {
+    backgroundImage: `url(${sadnessBackground})`,
+    backgroundSize: 'cover',
+  }
 }));
 
 function CharCard({ color, char }) {
@@ -23,11 +28,19 @@ function CharCard({ color, char }) {
     return `${BASE_URL}${formattedName}`;
   };
 
+  const chumisgoStyle = {
+    ...(char.Name === 'Chumisgo' ? {
+      style: {
+        color: 'white',
+      },
+    } : null),
+  }
+
   return (
     <Link href={`${buildCharUrl(char.Name)}`} >
       <Card className={ classes.card } variant="outlined">
-        <CardContent>
-          <Typography variant='h6' color={color} gutterBottom>
+        <CardContent className={classes[char.Name.toLowerCase()]}>
+          <Typography variant='h6' color={color} {...chumisgoStyle} gutterBottom>
               { char.Name }
           </Typography>
           {
@@ -35,7 +48,7 @@ function CharCard({ color, char }) {
               .entries(char)
               .map(([key, val]) => (
                 key !== 'Name' &&
-                <Typography variant='body1' color="textSecondary" gutterBottom key={`${char.Name}-${key}`}>
+                <Typography variant='body1' color="textSecondary" {...chumisgoStyle} gutterBottom key={`${char.Name}-${key}`}>
                   { key }: { val }
                 </Typography>
               ))
