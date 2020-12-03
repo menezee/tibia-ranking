@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, Fragment } from 'react';
 import {
   Grid,
   Paper,
@@ -7,6 +7,7 @@ import {
 import { Skeleton } from '@material-ui/lab';
 
 import { CharCard } from './components/char-card';
+import DaysHillerOffline from './components/days-hiller-offline';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +41,7 @@ function App() {
     'Portaluppi Dorminhoco',
     'Avalanchin Dorminhoco',
     'Marvo Dorminhoco',
-    'Cursed Of Mage',
+    'Chumisgo Dorminhoco',
     'Limac Dorminhoco',
   ], []);
 
@@ -102,44 +103,51 @@ function App() {
   };
 
   const hasCharBeenLoaded = (char = {}) => Object.keys(char).length > 0;
-
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const hiller = useMemo(() => findCharByName('Chumisgo Dorminhoco') ?? null, [chars]);
+  
   return (
     <div className={ classes.root }>
-      <Grid container spacing={ 2 } className={ classes.gridContainer }>
-        {
-          names
-          .concat('Chumisgo')
-          .sort(sortByLevel)
-          .map((name) => {
-            const char = findCharByName(name);
-
-            return (
-              <>
-                <Grid
-                  item
-                  xs={ 12 } sm={ 12 } md={ 3 }
-                  key={ name }
-                >
-                  <Paper className={ classes.paper }>
-                    {
-                      hasCharBeenLoaded(char) ? (
-                        <CharCard
-                          char={char}
-                          color={vocationColor(char)}
-                        />
-                      ) : (
-                        <Skeleton
-                          className={ classes.skeleton }
-                          variant='rect'
-                        />
-                      )
-                    }
-                  </Paper>
-                </Grid>
-              </>
-            )
-          })
-        }
+      <Grid container>
+        <DaysHillerOffline hiller={hiller} />
+        <Grid>
+          <Grid container spacing={ 2 } className={ classes.gridContainer }>
+            {
+              names
+                .concat('Chumisgo')
+                .sort(sortByLevel)
+                .map((name) => {
+                  const char = findCharByName(name);
+          
+                  return (
+                    <Fragment key={name}>
+                      <Grid
+                        item
+                        xs={ 12 } sm={ 12 } md={ 3 }
+                      >
+                        <Paper className={ classes.paper }>
+                          {
+                            hasCharBeenLoaded(char) ? (
+                              <CharCard
+                                char={char}
+                                color={vocationColor(char)}
+                              />
+                            ) : (
+                              <Skeleton
+                                className={ classes.skeleton }
+                                variant='rect'
+                              />
+                            )
+                          }
+                        </Paper>
+                      </Grid>
+                    </Fragment>
+                  )
+                })
+            }
+          </Grid>
+        </Grid>
       </Grid>
     </div>
   );

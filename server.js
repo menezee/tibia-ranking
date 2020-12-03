@@ -17,6 +17,7 @@ const extractDateFieldsFromString = dateString => (
 const parseDate = dateString => {
   const { month, day, year, time } = extractDateFieldsFromString(dateString);
   const centralEuropeDate = new Date(`${month} ${day} ${year}, ${time} GMT+0200`);
+  // TODO https://stackoverflow.com/a/23200062
   return centralEuropeDate.toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"});
 };
 
