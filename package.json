@@ -12,10 +12,10 @@
     "bent": "^7.3.2",
     "cheerio": "^1.0.0-rc.3",
     "date-fns": "^2.16.1",
-    "express": "^4.17.1",
+    "express": "^4.22.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start:frontend": "react-scripts start",
